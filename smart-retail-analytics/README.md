@@ -11,10 +11,12 @@ pinned: false
 
 # 🛍️ Smart Retail Analytics
 
-**Customer Tracking • Heatmaps • Behavior Analysis**  
+**Customer Tracking • Heatmaps • Behavior Analysis • Time spent in the store**  
 Powered by **YOLO11 + ByteTrack**
 
-<!-- ![Demo](results/heatmap_example.jpg) -->
+![Demo](results/heatmap.png)
+![Demo](results/live.png)
+![Demo](results/analyse.png)
 
 ## ✨ Features
 
