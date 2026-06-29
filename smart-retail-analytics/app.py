@@ -10,9 +10,12 @@ import time
 
 model = YOLO("yolo11s.pt")
 
+# To keep track of time spent per customer
+track_history = defaultdict(list)
+
 def analyze_retail(video):
     if video is None:
-        return None, pd.DataFrame(), None
+        return None, pd.DataFrame(), None, None
     
     print("🚀 Analyzing store video...")
     
@@ -33,22 +36,39 @@ def analyze_retail(video):
     zone_counts = defaultdict(int)
     time_spent = defaultdict(float)
     
-    for r in results:
-        if r.boxes is not None:
+    fps = 25  # Assume 25 fps for time calculation
+    
+    for frame_idx, r in enumerate(results):
+        if r.boxes is not None and r.boxes.id is not None:
             customer_count += len(r.boxes)
-            for box in r.boxes:
+            for box, track_id in zip(r.boxes, r.boxes.id):
                 cls = r.names[int(box.cls)]
                 zone_counts[cls] += 1
+                
+                # Track time spent (simple version)
+                track_history[int(track_id)].append(frame_idx)
     
-    df = pd.DataFrame(list(zone_counts.items()), columns=["Zone", "Customer Count"])
-    df = df.sort_values(by="Customer Count", ascending=False)
+    # Calculate time spent
+    for track_id, frames in track_history.items():
+        duration = len(frames) / fps
+        time_spent["Average Time Spent"] += duration
+    
+    if time_spent:
+        time_spent["Average Time Spent"] /= len(track_history)
+    
+    # DataFrames
+    zone_df = pd.DataFrame(list(zone_counts.items()), columns=["Zone", "Customer Count"])
+    zone_df = zone_df.sort_values(by="Customer Count", ascending=False)
+    
+    time_df = pd.DataFrame([["Average Time in Store", f"{time_spent.get('Average Time Spent', 0):.1f} seconds"]], 
+                           columns=["Metric", "Value"])
     
     # Generate Heatmap
     heatmap_path = generate_heatmap()
     
     output_video = f"runs/detect/retail_analysis/{video.name.split('/')[-1]}" if hasattr(video, 'name') else video
     
-    return output_video, df, heatmap_path
+    return output_video, zone_df, time_df, heatmap_path
 
 def generate_heatmap():
     plt.figure(figsize=(10, 6))
@@ -67,7 +87,7 @@ def generate_heatmap():
 # Gradio Interface
 with gr.Blocks(title="🛍️ Smart Retail Analytics", theme=gr.themes.Soft()) as demo:
     gr.Markdown("# 🛍️ Smart Retail Analytics")
-    gr.Markdown("**Real-time Customer Tracking • Heatmaps • Behavior Insights**")
+    gr.Markdown("**Customer Tracking • Heatmaps • Time Spent Analysis**")
     
     video_input = gr.Video(label="📹 Upload Store Surveillance Video", height=500)
     btn = gr.Button("🚀 Analyze Store", variant="primary", size="large")
@@ -76,13 +96,14 @@ with gr.Blocks(title="🛍️ Smart Retail Analytics", theme=gr.themes.Soft()) a
         output_video = gr.Video(label="🎥 Tracked Video with Customer IDs")
         heatmap_img = gr.Image(label="📊 Customer Density Heatmap")
     
-    gr.Markdown("### 📈 Analytics Report")
-    output_table = gr.DataFrame(label="Zone-wise Customer Count")
+    with gr.Row():
+        zone_table = gr.DataFrame(label="Zone-wise Customer Count")
+        time_table = gr.DataFrame(label="Time Spent Analysis")
     
     btn.click(
         fn=analyze_retail,
         inputs=video_input,
-        outputs=[output_video, output_table, heatmap_img]
+        outputs=[output_video, zone_table, time_table, heatmap_img]
     )
 
     gr.Markdown("---\nBuilt as part of Computer Vision Portfolio")
