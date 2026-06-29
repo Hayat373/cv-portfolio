@@ -29,7 +29,6 @@ checkpoints/
 # Data and media files
 *.jpg
 *.jpeg
-*.png
 *.gif
 *.mp4
 *.avi
@@ -39,6 +38,11 @@ checkpoints/
 *.zip
 *.tar
 *.gz
+
+# Keep demo screenshots visible in GitHub
+!*.png
+!results/*.png
+!results/**/*.png
 
 # Logs and temp files
 *.log

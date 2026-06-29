@@ -18,7 +18,7 @@ A curated collection of **advanced and impactful** Computer Vision projects.
 - Customer tracking, heatmaps, zone analysis, time spent analysis 
 - Business-focused solution for store optimization
 
-![Demo](smart-retail-analysis/results/analyse.png)
+![Demo](smart-retail-analytics/results/analyse.png)
 
 ### More Projects Coming Soon...
 - Fall Detection System
