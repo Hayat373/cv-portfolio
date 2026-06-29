@@ -14,9 +14,9 @@ pinned: false
 **Customer Tracking • Heatmaps • Behavior Analysis • Time spent in the store**  
 Powered by **YOLO11 + ByteTrack**
 
-![Demo](results/heatmap.png)
-![Demo](results/live.png)
-![Demo](results/analyse.png)
+![Demo](result/heatmap.png)
+![Demo](result/live.png)
+![Demo](result/analyse.png)
 
 ## ✨ Features
 
