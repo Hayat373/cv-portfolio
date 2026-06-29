@@ -2,9 +2,6 @@
 
 A curated collection of **advanced and impactful** Computer Vision projects.
 
-![Banner](https://via.placeholder.com/800x200?text=Computer+Vision+Portfolio)  
-*(Replace with your banner image later)*
-
 ---
 
 ## ✨ Featured Projects
