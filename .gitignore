@@ -40,10 +40,10 @@ checkpoints/
 *.gz
 *.avi
 
-# # Keep demo screenshots visible in GitHub
-# !*.png
-# !results/*.png
-# !results/**/*.png
+# Keep demo screenshots visible in GitHub
+!*.png
+!results/*.png
+!results/**/*.png
 
 # Logs and temp files
 *.log
