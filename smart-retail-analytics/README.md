@@ -33,8 +33,6 @@ Powered by **YOLO11 + ByteTrack**
 - OpenCV + Heatmap Generation
 - Gradio Web Interface
 
-## 🚀 Live Demo
-[Try Live Demo](https://huggingface.co/spaces/Hayat373/smart-retail-analytics) *(coming soon)*
 
 ## 📊 Business Value
 
